@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
+	<classpathentry exported="true" kind="lib" path="lib/jpa/hibernate-entitymanager-4.2.6.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/antlr-2.7.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/dom4j-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-commons-annotations-4.0.2.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-core-4.2.6.Final.jar" sourcepath="lib/required/hibernate-commons-annotations-4.0.2.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/javassist-3.15.0-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/jboss-logging-3.1.0.GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/required/jboss-transaction-api_1.1_spec-1.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

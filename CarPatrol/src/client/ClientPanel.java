@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import database.Car;
 public class ClientPanel extends JPanel implements Runnable {
+	int counter;
 	private ExecutorService threadExecutor;
 	private int initPosX;
 	private int initPosY;
@@ -37,6 +38,7 @@ public class ClientPanel extends JPanel implements Runnable {
 				circleHeight);
 		if (!Client.carList.isEmpty() && Client.carList != null) // balls exist
 		{
+			System.out.print("painted" + counter++);
 			for (Car car : Client.carList) {
 				g.fillOval((car.getX()), (car.getY()), RADIUS, RADIUS);
 				

@@ -8,12 +8,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistryBuilder;
 
 public class DatabaseManager {
-	Configuration config = new Configuration();
+
 	SessionFactory factory;
-	ServiceRegistryBuilder sRBuilder;
-	
 
 	public DatabaseManager(int provinceId) {
+		Configuration config = new Configuration();
 		config.addAnnotatedClass(Car.class);
 		config.addAnnotatedClass(Officer.class);
 		config.addAnnotatedClass(Ticket.class);
@@ -24,11 +23,29 @@ public class DatabaseManager {
 
 		// new SchemaExport(config).create(true, true);
 
-		sRBuilder = new ServiceRegistryBuilder().applySettings(config.getProperties());
+		ServiceRegistryBuilder sRBuilder = new ServiceRegistryBuilder()
+				.applySettings(config.getProperties());
 		factory = config.buildSessionFactory(sRBuilder.buildServiceRegistry());
 
 	}
 
+	public void moveCar(Car car) {
+		Session session = factory.getCurrentSession();
+		try {
+			int x = car.getX();
+			int y = car.getY();
+			int xSpeed = car.getxSpeed();
+			int ySpeed = car.getySpeed();
+			car.setX(x + xSpeed);
+			car.setY(y + ySpeed);
+			session.beginTransaction();
+			session.update(car);
+			session.getTransaction().commit();
+		} finally {
+			if (session.isOpen())
+				session.close();
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<Car> getCarList() {
@@ -45,11 +62,11 @@ public class DatabaseManager {
 				session.close();
 		}
 
-		/*ArrayList<Car> returnResult = new ArrayList<Car>();
-		for (Car c : result) {
-			returnResult.add(c);
-		}*/
+		/*
+		 * ArrayList<Car> returnResult = new ArrayList<Car>(); for (Car c :
+		 * result) { returnResult.add(c); }
+		 */
 		return result;
 	}
-	
+
 }

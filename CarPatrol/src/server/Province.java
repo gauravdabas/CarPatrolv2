@@ -5,6 +5,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Random;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import database.Car;
 import database.DatabaseManager;
 
@@ -15,18 +19,24 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 	public Province(int provinceId) throws RemoteException {
 		db = new DatabaseManager(provinceId);
 		Thread t = new Thread(new Runnable() {
+
 			public void run() {
-				ArrayList<Car> cars = db.getCarList();
-				for (int i = 0; i <= cars.size(); i++) {
-					//moveCar(cars[i]);
+				while (true) {
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for (int i = 0; i < db.getCarList().size(); i++) {
+						Car car = db.getCarList().get(i);
+						db.moveCar(car);
+					}
 				}
 			}
 		});
 		t.start();
-	}
-	
-	public void moveCar(Car car){
-		
+
 	}
 
 	@Override
@@ -63,8 +73,6 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 		ArrayList<Car> list = db.getCarList();
 		return list;
 	}
-
-
 
 	/*
 	 * public void sleepCar(CarImp ClientCar){ for (Runnable serverCar :

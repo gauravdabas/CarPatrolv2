@@ -55,7 +55,7 @@ public class Client extends JFrame {
 		/* get the providence Panel add it to this frame */
 		connectToServer();
 		remove(loginPanel);
-		revalidate();
+		//revalidate();
 		add(new ClientPanel());
 		this.setSize(500,500);
 		setLocationRelativeTo(null);
@@ -112,7 +112,7 @@ public class Client extends JFrame {
       	final Client ClientFrame = new Client();
       	while (true) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 				if (carList != null){
 					carList = province.getList();
 				}

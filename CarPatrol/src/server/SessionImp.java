@@ -11,7 +11,7 @@ public class SessionImp extends UnicastRemoteObject implements Session {
 		super();
 		
 	}
-
+	
 	@Override
 	public String getProvinceUI(int officerId) throws RemoteException {
 		return "/province";

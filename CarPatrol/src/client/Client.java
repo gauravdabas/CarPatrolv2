@@ -25,6 +25,7 @@ public class Client extends JFrame {
 	int provinceId;
 	int officerId = 0;
 	public static ArrayList<Car> carList;
+	public static ProvinceInterface province;
 
 	
 	public Client() {
@@ -41,7 +42,6 @@ public class Client extends JFrame {
 				try {
 					checkOfficerID(loginPanel.text.toString());
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				//System.out.println("You clicked the button");
@@ -53,12 +53,14 @@ public class Client extends JFrame {
 	
 	private void checkOfficerID(String string) throws RemoteException {
 		/* get the providence Panel add it to this frame */
-		remove(loginPanel);
 		connectToServer();
+		remove(loginPanel);
+		revalidate();
 		add(new ClientPanel());
 		this.setSize(500,500);
 		setLocationRelativeTo(null);
-		revalidate();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 	}
 	
 	
@@ -71,15 +73,11 @@ public class Client extends JFrame {
 			System.out.println("attempting to connect to rmi://"+serverName+":"+port+"/server");
            ServerInterface server = (ServerInterface) Naming.lookup("rmi://"+serverName+":"+port+"/server");
            
-           try{
         	   String province_id = server.checkCredentials(officerId, provinceId);
-        	   ProvinceInterface province = (ProvinceInterface) Naming.lookup("rmi://"+serverName+":"+port+"" +province_id);
-        	   carList = (ArrayList<Car>) province.getList();
-           }catch(Exception e){
-        	   //wrong officer and province combination
-           }
-            
-            
+        	   province = (ProvinceInterface) Naming.lookup("rmi://"+serverName+":"+port + province_id);
+        	   ArrayList<Car> list = (ArrayList<Car>) province.getList();
+        	   carList = list;
+
         }
         catch (MalformedURLException murle) {
             System.out.println();
@@ -110,12 +108,15 @@ public class Client extends JFrame {
 	}
 	
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RemoteException {
       	final Client ClientFrame = new Client();
       	while (true) {
 			try {
-				Thread.sleep(20);
-				//carList = province.getCarList();
+				Thread.sleep(100);
+				if (carList != null){
+					carList = province.getList();
+				}
+				
 			} catch (InterruptedException ex) {
 				ex.printStackTrace();
 			} 

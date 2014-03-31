@@ -8,10 +8,13 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistryBuilder;
+
+import database.Car;
 
 public class Server extends RemoteServer implements ServerInterface {
 	Configuration config = new Configuration();
@@ -19,15 +22,17 @@ public class Server extends RemoteServer implements ServerInterface {
 	SessionFactory factory;
 	int provinceId;
 	int port = 8001;
+	
 	public static ProvinceInterface province1;
 	public static ProvinceInterface province2;
 	public static ProvinceInterface province3;
-
+	public ArrayList<Car> list;
 	public Server() throws RemoteException {
 		try {
 			province1 = new Province(1);
 			province2 = new Province(2);
 			province3 = new Province(3);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,15 +43,18 @@ public class Server extends RemoteServer implements ServerInterface {
 
 		try {
 			Server server = new Server();
+			Province province1 = new Province(1);
+			Province province2 = new Province(2);
+			Province province3 = new Province(3);
 
 			// create the registry
 			LocateRegistry.createRegistry(port);
 			System.out.println("Server Registry is created");
 
 			UnicastRemoteObject.exportObject(server, port);
-			UnicastRemoteObject.exportObject(province1,port);
+			/*UnicastRemoteObject.exportObject(province1,port);
 			UnicastRemoteObject.exportObject(province2,port);
-			UnicastRemoteObject.exportObject(province3,port);
+			UnicastRemoteObject.exportObject(province3,port);*/
 
 			// binds the exposed objects to the registry and gives a name for
 			// each
@@ -55,6 +63,7 @@ public class Server extends RemoteServer implements ServerInterface {
 			Naming.rebind("//localhost:8001/province2", province2);
 			Naming.rebind("//localhost:8001/province3", province3);
 			System.out.println("province objects and server object named in registry");
+			/*list = province1.getList();*/
 
 		} catch (Exception e) {
 			System.out.println("Trouble: " + e);
@@ -81,6 +90,8 @@ public class Server extends RemoteServer implements ServerInterface {
 		}
 	}
 
+	
+	
 	@Override
 	public String checkCredentials(int officer_id, int provinceId)
 			throws RemoteException {
@@ -88,6 +99,12 @@ public class Server extends RemoteServer implements ServerInterface {
 		// reference, if not exist throw an error
 		return "/province1";
 
+	}
+
+	@Override
+	public ArrayList<Car> getLista() throws RemoteException {
+		// TODO Auto-generated method stub
+		return list;
 	}
 
 }

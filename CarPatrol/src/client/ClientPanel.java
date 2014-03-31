@@ -6,8 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,14 +35,12 @@ public class ClientPanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		g.drawOval(initPosX, initPosY, circleWidth,
 				circleHeight);
-		if (!Client.carList.isEmpty()) // balls exist
+		if (!Client.carList.isEmpty() && Client.carList != null) // balls exist
 		{
 			for (Car car : Client.carList) {
 				g.fillOval((car.getX()), (car.getY()), RADIUS, RADIUS);
 				
 			}
-		}else{
-			System.out.println("No cars to display, list is empty");
 		}
 	}
 

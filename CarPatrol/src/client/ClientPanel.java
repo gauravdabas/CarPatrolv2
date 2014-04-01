@@ -85,7 +85,7 @@ public class ClientPanel extends JPanel implements Runnable {
 				boolean carPulledOver = false;
 				
 				while (carPulledOver == false){
-					for (Car car : Client.carList) {		//iterate through the carssss
+					for (Car car : Client.carList) {		//iterate through the carsssss
 						try {
 							if (ballIsClicked(firstClick.x, firstClick.y, car)) {		//check if any of them were clicked
 								

@@ -32,6 +32,12 @@ public class ClientPanel extends JPanel implements Runnable {
 	public final int RADIUS = 20;
 	private boolean dragging = false;
 	
+	private int clickX;
+	private int clickY;
+	
+	private int releaseX;
+	private int releaseY;
+	
 	public ClientPanel() {
 		threadExecutor = Executors.newCachedThreadPool();
 		threadExecutor.execute(this);
@@ -62,6 +68,10 @@ public class ClientPanel extends JPanel implements Runnable {
 	class mouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent e) {
+			clickX = e.getX();
+			clickY = e.getY();
+			
+			
 			firstClick = e.getPoint();
 			
 			Ellipse2D policeLights = new Ellipse2D.Float(initPosX, initPosY, circleWidth,	circleHeight);
@@ -81,7 +91,7 @@ public class ClientPanel extends JPanel implements Runnable {
 								
 								//pull over the car
 								Client.province.stopCar(car);
-								carPulledOver = true;
+								clickPopUp();
 								break;
 							}
 						} catch (RemoteException e1) {
@@ -89,10 +99,7 @@ public class ClientPanel extends JPanel implements Runnable {
 							e1.printStackTrace();
 						}
 					}
-				}
-				
-				if(carPulledOver == true){
-					clickPopUp();
+					carPulledOver = true;
 				}
 				
 			}
@@ -110,15 +117,23 @@ public class ClientPanel extends JPanel implements Runnable {
 
 		 @Override
 	        public void mouseReleased(MouseEvent m) {
+			 	releaseX = m.getX();
+			 	releaseY = m.getY();
+			 	
+			 	if (clickX != releaseX){
+			 		//drag event happened
+			 		dragPopUp();
+			 	}
+			 
 	            firstClick = null;
 	            dragging = false;
-	            //clickPopUp();
 	            repaint();
 	        }
 
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			System.out.println("mouse dragged event");
 			int dx = e.getX() - firstClick.x;
 			int dy = e.getY() - firstClick.y;
 			
@@ -131,46 +146,60 @@ public class ClientPanel extends JPanel implements Runnable {
 				circleHeight += dy;
 			}
 			firstClick = e.getPoint();
-
+			
+			
 			repaint();
 			
 		}
 
 		private void clickPopUp() {
-			JFrame popUpFrame = new JFrame("clicking");
-			JPanel p = new JPanel();
-			p.setSize(200, 200);
+			JFrame clickFrame = new JFrame("Issue a ticket");
+			JPanel ticketPanel = new JPanel();
+			ticketPanel.setSize(200, 200);
 			
 			JTextField t = new JTextField(10);
-			JButton b = new JButton("Add");
-			JLabel label = new JLabel("Number of cars you want to add");
-			p.add(label);
-			p.add(t);
-			p.add(b);
-			popUpFrame.add(p);
-			popUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			popUpFrame.pack();
-			popUpFrame.setLocationRelativeTo(null);
-			popUpFrame.setVisible(true);
+			
+			JLabel ticketPrompt = new JLabel("What kind of ticket to issue?");
+			JButton ticketButton1 = new JButton("Speeding");
+			JButton ticketButton2 = new JButton("Red light");
+			JButton ticketButton3 = new JButton("Carless driving");
+			JButton warning = new JButton("Issue a warning");
+			
+			ticketPanel.add(ticketPrompt);
+			ticketPanel.add(ticketButton1);
+			ticketPanel.add(ticketButton2);
+			ticketPanel.add(ticketButton3);
+			ticketPanel.add(warning);
+			
+			clickFrame.add(ticketPanel);
+			clickFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			clickFrame.pack();
+			clickFrame.setLocationRelativeTo(null);
+			clickFrame.setVisible(true);
 
 		}
 		
 		private void dragPopUp() {
-			JFrame popUpFrame = new JFrame("Dragging");
-			JPanel p = new JPanel();
-			p.setSize(200, 200);
+			JFrame dragFrame = new JFrame("Add/delete cars");
+			JPanel dragPanel = new JPanel();
+			dragPanel.setSize(200, 200);
 			
-			JTextField t = new JTextField(10);
-			JButton b = new JButton("Add");
-			JLabel label = new JLabel("Number of cars you want to add");
-			p.add(label);
-			p.add(t);
-			p.add(b);
-			popUpFrame.add(p);
-			popUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			popUpFrame.pack();
-			popUpFrame.setLocationRelativeTo(null);
-			popUpFrame.setVisible(true);
+			JTextField numOfCarsField = new JTextField(10);
+			JButton addCarsButton = new JButton("Add");
+			JLabel numOfCars = new JLabel("Number of cars you want to add");
+			
+			JButton deleteCarsButton = new JButton("Delete all cars");
+			
+			dragPanel.add(numOfCars);
+			dragPanel.add(numOfCarsField);
+			dragPanel.add(addCarsButton);
+			dragPanel.add(deleteCarsButton);
+			
+			dragFrame.add(dragPanel);
+			dragFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			dragFrame.pack();
+			dragFrame.setLocationRelativeTo(null);
+			dragFrame.setVisible(true);
 
 		}
 	}

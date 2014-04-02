@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ public class ClientPanel extends JPanel implements Runnable {
 	private int releaseY;
 	
 	public ClientPanel() {
+		setSize(500,500);
 		threadExecutor = Executors.newCachedThreadPool();
 		threadExecutor.execute(this);
 	}

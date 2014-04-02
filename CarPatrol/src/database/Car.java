@@ -12,6 +12,11 @@ import javax.persistence.Table;
 @Table(name="CAR")
 public class Car implements Serializable {
 
+
+	public Car(int newX, int newY, int xSpeed2, int ySpeed2) {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Car(){
 		
 	}
@@ -35,10 +40,18 @@ public class Car implements Serializable {
 	
 	@Column(name="YSpeed")
 	private int ySpeed;
+	
+	@Column(name="Is_Stoped")
+	private boolean isStop;
 
-	public Car(int newX, int newY, int xSpeed2, int ySpeed2) {
-		// TODO Auto-generated constructor stub
+	public boolean getisStop() {
+		return isStop;
 	}
+
+	public void setStop(boolean isStop) {
+		this.isStop = isStop;
+	}
+
 
 	public int getCarId() {
 		return carId;
@@ -64,7 +77,7 @@ public class Car implements Serializable {
 		this.y = y;
 	}
 
-	public boolean isInProv() {
+	public boolean getisInProv() {
 		return isInProv;
 	}
 

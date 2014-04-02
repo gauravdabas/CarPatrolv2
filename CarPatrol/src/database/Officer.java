@@ -21,12 +21,6 @@ public class Officer {
 	@Column(name="Prov_Id")
 	private int provId;
 	
-	@Column(name="Ticket_Count")
-	private int ticketCount;
-	
-	@OneToOne(targetEntity=Provincedb.class, cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Provincedb province;
-
 	public int getOfficerId() {
 		return officerId;
 	}
@@ -43,22 +37,6 @@ public class Officer {
 		this.provId = provId;
 	}
 
-	public int getTicketCount() {
-		return ticketCount;
-	}
-
-	public void setTicketCount(int ticketCount) {
-		this.ticketCount = ticketCount;
-	}
-
-	public Provincedb getProvince() {
-		return province;
-	}
-
-	public void setProvince(Provincedb province) {
-		this.province = province;
-	} 
-	
 	
 	
 }

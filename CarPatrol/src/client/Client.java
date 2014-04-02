@@ -23,24 +23,25 @@ public class Client extends JFrame {
 	loginPanel loginPanel;
 	public static int port = 8001;
 	int provinceId;
-	int officerId = 0;
+	int officerId;
 	public static ArrayList<Car> carList;
 	public static ProvinceInterface province;
-
+	public static String provinceName;
 	
 	public Client() {
 		loginPanel = new loginPanel(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
-
 		add(loginPanel);
 		pack();
 		loginPanel.OkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					checkOfficerID(loginPanel.text.toString());
+					int off_Id =Integer.parseInt(loginPanel.text.getText());
+					checkOfficerID(off_Id, loginPanel.comboBox.getSelectedIndex() + 1);
+					System.out.print("Check officer in province");
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
@@ -51,13 +52,16 @@ public class Client extends JFrame {
 		
 	}
 	
-	private void checkOfficerID(String string) throws RemoteException {
+	private void checkOfficerID(int officer_id, int province ) throws RemoteException {
 		/* get the providence Panel add it to this frame */
+		officerId = officer_id;
+		provinceId = province;
 		connectToServer();
 		remove(loginPanel);
+		setTitle(provinceName);
 		//revalidate();
+		setSize(500, 500);
 		add(new ClientPanel());
-		this.setSize(500,500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -73,8 +77,8 @@ public class Client extends JFrame {
 			System.out.println("attempting to connect to rmi://"+serverName+":"+port+"/server");
            ServerInterface server = (ServerInterface) Naming.lookup("rmi://"+serverName+":"+port+"/server");
            
-        	   String province_id = server.checkCredentials(officerId, provinceId);
-        	   province = (ProvinceInterface) Naming.lookup("rmi://"+serverName+":"+port + province_id);
+           	provinceName = server.checkCredentials(officerId, provinceId);
+        	   province = (ProvinceInterface) Naming.lookup("rmi://"+serverName+":"+port + provinceName);
         	   ArrayList<Car> list = (ArrayList<Car>) province.getList();
         	   carList = list;
 

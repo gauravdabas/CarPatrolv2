@@ -94,10 +94,26 @@ public class Server extends RemoteServer implements ServerInterface {
 	
 	@Override
 	public String checkCredentials(int officer_id, int provinceId)
-			throws RemoteException {
-		// connect to provinceId check for officer, return province export
-		// reference, if not exist throw an error
-		return "/province1";
+			throws RemoteException {		//also need to do if officer is belongs to this province
+		//do the logic
+		String selectedProv = "";
+		switch (provinceId) {
+		case 1: 
+			selectedProv =  "/province1";
+			break;
+			
+		case 2:
+			selectedProv = "/province2";
+			break;
+			
+		case 3:
+			selectedProv =  "/province3";
+			break;
+			
+		default: System.out.print("Bad province Id");
+        break;
+		}		
+		return selectedProv;
 
 	}
 

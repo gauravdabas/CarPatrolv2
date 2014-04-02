@@ -13,8 +13,9 @@ import database.DatabaseManager;
 public class Province extends UnicastRemoteObject implements ProvinceInterface {
 	DatabaseManager db;
 	Random ran = new Random();
-
+	int Currentprovince;
 	public Province(int provinceId) throws RemoteException {
+		Currentprovince = provinceId;
 		db = new DatabaseManager(provinceId);
 		Thread t = new Thread(new Runnable() {
 			public void run() {
@@ -53,11 +54,6 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 		
 	}
 
-	@Override
-	public void updateCar(Car car) throws RemoteException {
-		db.updateCar(car);
-		
-	}
 	
 	@Override
 	public void stopCar(Car car) throws RemoteException {
@@ -65,6 +61,11 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 		
 	}
 	
+	@Override
+	public void updateCar(Car car) throws RemoteException {
+		db.updateCar(car);
+		
+	}
 
 	@Override
 	public void startCar(Car car) throws RemoteException {
@@ -74,18 +75,24 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 	
 	@Override
 	public void createCar(int centreX, int centreY, int diameter, int numOfCars)
-			throws RemoteException {
+	throws RemoteException {
 
-		for (int i = 0; i <= numOfCars; i++) {
-			int newX = centreX + ran.nextInt(diameter / 2) + 1;
-			int newY = centreX + ran.nextInt(diameter / 2) + 1;
-			int xSpeed = ran.nextInt(3) + 1;
-			int ySpeed = ran.nextInt(3) + 1;
-			Car car = new Car(newX, newY, xSpeed, ySpeed);
-			// db.save(car);
-			// create a saveCar method inside Databasemanager
+	for (int i = 0; i < numOfCars; i++) {
+	int newX = centreX + ran.nextInt(50) + 1;
+	int newY = centreY + ran.nextInt(50) + 1;
 
-		}
+	//int xSpeed = ran.nextInt(3) + 1;
+	//int ySpeed = ran.nextInt(3) + 1;
+
+	int xSpeed = ran.nextInt(25) + 1;
+	int ySpeed = ran.nextInt(25) + 1;
+	int workProv;
+	for (workProv=1; workProv<=3; workProv++){
+		DatabaseManager allDb =new DatabaseManager(workProv);
+		allDb.createCar(newX, newY, xSpeed, ySpeed,Currentprovince,workProv);
+	}
+	
+	}
 
 	}
 
@@ -99,8 +106,32 @@ public class Province extends UnicastRemoteObject implements ProvinceInterface {
 	@Override
 	public void createTicket(Car car, int officer_id, String ticket_type)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		
+			db.createTicket(car, officer_id, ticket_type);
 	}
+
+	@Override
+	public boolean checkOfficer(int officer_id, int prov) {
+		return db.checkOfficer(officer_id, prov);
+	}
+
+	@Override
+	public int getTicketCountByOfficer(int officer_id) throws RemoteException {
+		return db.getTicketCountByOfficer(officer_id);
+	}
+
+	@Override
+	public int getNumberOfCarsInProv(int officer_id) throws RemoteException {
+		// TODO Auto-generated method stub
+		return db.getNumberOfCarsInProv(officer_id);
+	}
+
+	@Override
+	public int getTotalValueByOfficer(int officer_id) throws RemoteException {
+		// TODO Auto-generated method stub
+		return db.getTotalValueByOfficer(officer_id);
+	}
+
+	
+
 
 }

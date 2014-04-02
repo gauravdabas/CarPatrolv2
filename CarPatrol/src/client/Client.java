@@ -23,7 +23,7 @@ public class Client extends JFrame {
 	loginPanel loginPanel;
 	public static int port = 8001;
 	int provinceId;
-	int officerId;
+	static int officerId;
 	public static ArrayList<Car> carList;
 	public static ProvinceInterface province;
 	public static String provinceName;
@@ -59,7 +59,6 @@ public class Client extends JFrame {
 		connectToServer();
 		remove(loginPanel);
 		setTitle(provinceName);
-		//revalidate();
 		setSize(500, 500);
 		add(new ClientPanel());
 		setLocationRelativeTo(null);
@@ -116,7 +115,7 @@ public class Client extends JFrame {
       	final Client ClientFrame = new Client();
       	while (true) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(300);
 				if (carList != null){
 					carList = province.getList();
 				}

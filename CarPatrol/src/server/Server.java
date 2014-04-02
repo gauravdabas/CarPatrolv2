@@ -27,6 +27,7 @@ public class Server extends RemoteServer implements ServerInterface {
 	public static ProvinceInterface province2;
 	public static ProvinceInterface province3;
 	public ArrayList<Car> list;
+	
 	public Server() throws RemoteException {
 		try {
 			province1 = new Province(1);
@@ -43,44 +44,22 @@ public class Server extends RemoteServer implements ServerInterface {
 
 		try {
 			Server server = new Server();
-			Province province1 = new Province(1);
-			Province province2 = new Province(2);
-			Province province3 = new Province(3);
-
 			// create the registry
 			LocateRegistry.createRegistry(port);
 			System.out.println("Server Registry is created");
 
 			UnicastRemoteObject.exportObject(server, port);
-			/*UnicastRemoteObject.exportObject(province1,port);
-			UnicastRemoteObject.exportObject(province2,port);
-			UnicastRemoteObject.exportObject(province3,port);*/
 
-			// binds the exposed objects to the registry and gives a name for
-			// each
 			Naming.rebind("//localhost:8001/server", server);
 			Naming.rebind("//localhost:8001/province1", province1);
 			Naming.rebind("//localhost:8001/province2", province2);
 			Naming.rebind("//localhost:8001/province3", province3);
 			System.out.println("province objects and server object named in registry");
-			/*list = province1.getList();*/
 
 		} catch (Exception e) {
 			System.out.println("Trouble: " + e);
 		}
 	}
-
-	/*
-	 * @Override public String getProvince(int officerID) throws RemoteException
-	 * { Session s = factory.getCurrentSession(); s.beginTransaction();
-	 * //Province prov = new Province(); Query result =
-	 * s.createQuery("from Province where officerId = :officerID")
-	 * .setParameter("officerID", officerID);
-	 * 
-	 * s.getTransaction().commit(); //save changes after updating any table
-	 * String str = (String) result.list().get(0); if(str == "" || str == null){
-	 * return "Officer does not exist"; } return str; }
-	 */
 
 	public static void main(String args[]) {
 		try {
@@ -90,8 +69,6 @@ public class Server extends RemoteServer implements ServerInterface {
 		}
 	}
 
-	
-	
 	@Override
 	public String checkCredentials(int officer_id, int provinceId)
 			throws RemoteException {		//also need to do if officer is belongs to this province
@@ -101,15 +78,15 @@ public class Server extends RemoteServer implements ServerInterface {
 		case 1: 
 			selectedProv =  "/province1";
 			break;
-			
+
 		case 2:
 			selectedProv = "/province2";
 			break;
-			
+
 		case 3:
 			selectedProv =  "/province3";
 			break;
-			
+
 		default: System.out.print("Bad province Id");
         break;
 		}		
